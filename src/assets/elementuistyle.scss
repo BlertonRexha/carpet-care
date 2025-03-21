@@ -1,0 +1,20 @@
+$font-size-base: 16px;
+$el-tag-font-size: 14px;
+
+:root {
+  --font-size-base: #{$font-size-base};
+  --el-font-size-base: #{$font-size-base};;
+  --el-menu-item-font-size: #{$font-size-base};;
+}
+
+.el-table {
+  font-size: var(--font-size-base);
+}
+
+.el-tag {
+  font-size: $el-tag-font-size;
+}
+
+.el-button--small {
+  font-size: 14px;
+}
