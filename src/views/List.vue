@@ -11,23 +11,27 @@
           <span>{{ formatedDate(row.createdDate) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="Name" />
+      <el-table-column prop="name" label="Emri" />
       <el-table-column prop="tel" label="Tel" />
-      <el-table-column prop="paid" label="Paid">
+      <el-table-column prop="paid" label="Paguar">
         <template #default="{ row }">
           <paid-badge :paid="row.paid" />
         </template>
       </el-table-column>
-      <el-table-column prop="shipped" label="Shipped">
+      <el-table-column prop="shipped" label="Derguar">
         <template #default="{ row }">
           <shipped-badge :shipped="row.shipped" />
         </template>
       </el-table-column>
-      <el-table-column prop="totalPrice" label="Price" />
+      <el-table-column prop="totalPrice" label="Qmimi">
+        <template #default="{ row }">
+          {{ row.totalPrice }} €
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="Operations" min-width="120">
         <template #default>
-          <el-button link type="primary" size="small" @click="viewDetails"> Detail </el-button>
-          <el-button link type="primary" size="small" @click="editItem">Edit</el-button>
+          <el-button link type="primary" size="small" @click="viewDetails"> Detajet </el-button>
+          <el-button link type="primary" size="small" @click="editItem"> Ndrysho </el-button>
         </template>
       </el-table-column>
     </el-table>

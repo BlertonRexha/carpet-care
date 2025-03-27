@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-tooltip v-if="paid.done" placement="top" effect="dark">
-      <el-tag type="success" effect="dark" round> Paid </el-tag>
+      <el-tag type="success" effect="dark" round> Paguar </el-tag>
       <template #content>
-        <p>Paid on: {{ formatedDate }}</p>
-        <p>Cashier: {{ paid.cashier }}</p>
+        <p>Paguar me: {{ formatedDate }}</p>
+        <p>Pagoi: {{ paid.cashier }}</p>
       </template>
     </el-tooltip>
-    <el-tag v-else type="warning" effect="dark" round> Unpaid </el-tag>
+    <el-tag v-else type="warning" effect="dark" round> Pa paguar </el-tag>
   </div>
 </template>
 
