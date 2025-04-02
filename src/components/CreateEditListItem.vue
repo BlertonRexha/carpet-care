@@ -14,14 +14,14 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="Gjersia X">
-                  <el-input v-model="carpet.dimensionsX" class="w-100px" @keypress="isNumber($event)" @input="setDefaultPrice(index)">
+                  <el-input v-model="carpet.dimensionsX" class="w-100px" @keypress="isNumber" @input="setDefaultPrice(index)">
                     <template #append>X</template>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="Gjatsia Y">
-                  <el-input v-model.number="carpet.dimensionsY" class="w-100px" @keypress="isNumber($event)" @input="setDefaultPrice(index)">
+                  <el-input v-model.number="carpet.dimensionsY" class="w-100px" @keypress="isNumber" @input="setDefaultPrice(index)">
                     <template #append>Y</template>
                   </el-input>
                 </el-form-item>
@@ -35,14 +35,14 @@
             <el-row>
               <el-col :span="8">
                 <el-form-item label="Qmimi per meter katror">
-                  <el-input v-model="carpet.pricePerMeter" @keypress="isNumber($event)" class="w-100px">
+                  <el-input v-model="carpet.pricePerMeter" @keypress="isNumber" class="w-100px">
                     <template #append>€</template>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="Qmimi perfundimtar">
-                  <el-input v-model="carpet.price" @keypress="isNumber($event)" class="w-100px">
+                  <el-input v-model="carpet.price" @keypress="isNumber" class="w-100px">
                     <template #append>€</template>
                   </el-input>
                 </el-form-item>
@@ -56,7 +56,7 @@
         </el-form-item>
         <div class="total-price">
           <el-form-item label="Qmimi perfundimtar">
-            <el-input v-model="form.totalPrice" @keypress="isNumber($event)">
+            <el-input v-model="form.totalPrice" @keypress="isNumber">
               <template #append>€</template>
             </el-input>
           </el-form-item>
@@ -74,15 +74,17 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { clone } from 'lodash';
 import { isNumber } from '../plugins/utils.ts'
+import { useMainStore } from '../store/index.ts'
 
 export default defineComponent({
   name: 'CreateEditListItem',
-  props: {
-  },
+  props: ['model'],
   data() {
     return {
       dialogVisible: false,
+      saving: false,
       form: {
         name: '',
         tel: '',
@@ -98,19 +100,33 @@ export default defineComponent({
       },
     };
   },
+  mounted() {
+    if (this.model) {
+      this.form = clone(this.model)
+    }
+  },
   methods: {
     isNumber,
     handleClose() {
       this.$emit('close');
     },
     handleSave() {
-      this.$emit('save');
+      console.log('saving')
+      this.saving = true;
+      if (this.model) useMainStore().updateCarpet(this.form);
+      else useMainStore().addCarpet(this.form);
+      this.saving = false;
+      this.handleClose();
+    },
+    setTotalPrice() {
+      this.form.totalPrice = this.form.carpets.reduce((acc, item) => acc += item.price, 0)
     },
     setDefaultPrice(index) {
-      console.log(this.form.carpets[index].price)
-      this.form.carpets[index].price = this.form.carpets[index].dimensionsX
-        * this.form.carpets[index].dimensionsY
-        * this.form.carpets[index].quantity;
+      const { dimensionsX, dimensionsY, quantity, pricePerMeter } = this.form.carpets[index]
+      if (dimensionsX && dimensionsY && quantity && pricePerMeter) {
+        this.form.carpets[index].price = dimensionsX * dimensionsY * quantity * pricePerMeter
+        this.setTotalPrice()
+      }
     },
     addNewCarpet() {
       this.form.carpets.push({

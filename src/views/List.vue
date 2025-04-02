@@ -3,7 +3,7 @@
     <div class="list-view-header">
       <h1>Orders</h1>
       <el-button type="primary" @click="createItem">Create</el-button>
-      <create-edit-list-item v-if="showCreateDialog" @close="showCreateDialog = false" />
+      <create-edit-list-item v-if="showCreateDialog" @close="closeCreateEditModal" :model="editingModel" />
     </div>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column fixed prop="createdDate" label="Date">
@@ -29,9 +29,9 @@
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="Operations" min-width="120">
-        <template #default>
+        <template #default="{ row }">
           <el-button link type="primary" size="small" @click="viewDetails"> Detajet </el-button>
-          <el-button link type="primary" size="small" @click="editItem"> Ndrysho </el-button>
+          <el-button link type="primary" size="small" @click="editItem(row)"> Ndrysho </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -55,6 +55,7 @@ export default defineComponent({
   data() {
     return {
       showCreateDialog: false,
+      editingModel: null,
     };
   },
   computed: {
@@ -67,8 +68,13 @@ export default defineComponent({
     viewDetails() {
       console.log("viewDetails");
     },
-    editItem() {
-      console.log("editItem");
+    closeCreateEditModal() {
+      this.editingModel = null;
+      this.showCreateDialog = false;
+    },
+    editItem(model) {
+      this.editingModel = model;
+      this.showCreateDialog = true;
     },
     createItem() {
       this.showCreateDialog = true;

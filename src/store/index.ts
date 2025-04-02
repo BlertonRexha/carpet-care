@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { uniqueId } from 'lodash';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useMainStore = defineStore('main', {
@@ -73,6 +74,13 @@ export const useMainStore = defineStore('main', {
     }],
   }),
   actions: {
+    addCarpet(data) {
+      this.list.push({ ...data, id: uniqueId})
+    },
+    updateCarpet(data) {
+      const index = this.list.findIndex(({ id }) => id === data.id)
+      if (index > -1) this.list[index] = data;
+    }
     // increment() {
     //   this.count += 1;
     // },
