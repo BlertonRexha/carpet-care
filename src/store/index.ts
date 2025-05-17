@@ -4,6 +4,12 @@ import { uniqueId } from 'lodash';
 // eslint-disable-next-line import/prefer-default-export
 export const useMainStore = defineStore('main', {
   state: () => ({
+    userDetails: {
+      id: "1897238981297398",
+      name: "Fatos Hajdini",
+      role: "admin",
+      store: "Leoni Group"
+    },
     list: [{
       id: 1,
       name: 'John Doe',
@@ -74,6 +80,9 @@ export const useMainStore = defineStore('main', {
     }],
   }),
   actions: {
+    setUserDetails(data) {
+      this.userDetails = data;
+    },
     addCarpet(data) {
       this.list.push({ ...data, id: uniqueId})
     },
