@@ -45,6 +45,7 @@ export default defineComponent({
 <style lang="scss" scoped>
     .login-container {
         width: 300px;
+        height: fit-content;
         padding: 2rem;
         margin: 5rem auto;
         background-color: white;
